@@ -2,7 +2,7 @@ use clap::ArgMatches;
 use colors::*;
 use image;
 use image::{DynamicImage, FilterType, GenericImage, Pixel};
-use sixel_sys;
+//use sixel_sys;
 use std::collections::HashMap;
 use std::io::Write;
 use std::os::raw::{c_char, c_int, c_uchar, c_void};
@@ -197,19 +197,19 @@ pub fn convert_sixel(image: &DynamicImage) -> String {
 	let width = image.width() as i32;
 	let height = image.height() as i32;
 
-	let mut output = ptr::null_mut();
+	let output: *mut i32 = ptr::null_mut();
 	let mut result: Vec<u8> = Vec::new();
-	unsafe {
+	/*unsafe {
 		sixel_sys::sixel_output_new(
 			&mut output,
 			Some(sixel_output_write),
 			&mut result as *mut _ as *mut c_void,
 			ptr::null_mut()
 		);
-	}
-	let mut dither = ptr::null_mut();
+	}*/
+	let dither: *mut i32 = ptr::null_mut();
 	unsafe {
-		if sixel_sys::sixel_dither_new(&mut dither, 256, ptr::null_mut()) != sixel_sys::OK {
+		/*if sixel_sys::sixel_dither_new(&mut dither, 256, ptr::null_mut()) != sixel_sys::OK {
 			// TODO: Add way to return an error?
 			eprintln!("Creating sixel dither failed");
 			return String::new();
@@ -231,7 +231,7 @@ pub fn convert_sixel(image: &DynamicImage) -> String {
 		if sixel_sys::sixel_encode(data.as_mut_ptr(), width, height, 1, dither, output) != sixel_sys::OK {
 			eprintln!("Encoding sixel failed");
 			return String::new();
-		}
+		}*/
 	}
 
 	String::from_utf8(result).unwrap()

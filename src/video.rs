@@ -1,6 +1,6 @@
 use clap::ArgMatches;
 use colors::*;
-use ears::{AudioController, Music};
+//use ears::{AudioController, Music};
 use preprocess;
 use std::cmp;
 use std::env;
@@ -103,13 +103,15 @@ pub fn main(options: &ArgMatches) -> i32 {
 	play(dir_path, frames, rate)
 }
 pub fn play(dir_path: &Path, frames: u32, rate: u8) -> i32 {
-	let mut music = match Music::new(&dir_path.join("sound.wav").to_string_lossy()) {
-		Some(music) => music,
-		None => {
-			eprintln!("Couldn't open music file");
-			return 1;
-		},
-	};
+    /*
+	 *let mut music = match Music::new(&dir_path.join("sound.wav").to_string_lossy()) {
+	 *    Some(music) => music,
+	 *    None => {
+	 *        eprintln!("Couldn't open music file");
+	 *        return 1;
+	 *    },
+	 *};
+     */
 
 	println!("Ready to play. Press enter when you are... ");
 
@@ -169,7 +171,7 @@ pub fn play(dir_path: &Path, frames: u32, rate: u8) -> i32 {
 		});
 	}
 
-	music.play();
+	//music.play();
 
 	let optimal = 1_000_000_000 / rate as i64;
 	let mut lag: i64 = 0;
@@ -186,15 +188,15 @@ pub fn play(dir_path: &Path, frames: u32, rate: u8) -> i32 {
 				if higher.load(AtomicOrdering::Relaxed) {
 					higher.store(false, AtomicOrdering::Relaxed);
 
-					volume = cmp::min(volume + 10, 100);
-					music.set_volume(volume as f32 / 100.0);
+					//volume = cmp::min(volume + 10, 100);
+					//music.set_volume(volume as f32 / 100.0);
 
 					show_volume = max_show_volume;
 				} else if lower.load(AtomicOrdering::Relaxed) {
 					lower.store(false, AtomicOrdering::Relaxed);
 
-					volume = cmp::max(volume - 10, 0);
-					music.set_volume(volume as f32 / 100.0);
+					//volume = cmp::max(volume - 10, 0);
+					//music.set_volume(volume as f32 / 100.0);
 
 					show_volume = max_show_volume;
 				}
@@ -203,7 +205,7 @@ pub fn play(dir_path: &Path, frames: u32, rate: u8) -> i32 {
 
 		handle_volume!();
 		if pause.load(AtomicOrdering::Relaxed) {
-			music.pause();
+			//music.pause();
 
 			let duration = Duration::from_millis(50);
 			while pause.load(AtomicOrdering::Relaxed) && !::EXIT.load(AtomicOrdering::Relaxed) {
@@ -214,7 +216,7 @@ pub fn play(dir_path: &Path, frames: u32, rate: u8) -> i32 {
 			}
 			print!("\r    ");
 
-			music.play();
+			//music.play();
 		}
 		allowexit!({
 			onexit!();

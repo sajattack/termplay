@@ -1,11 +1,11 @@
 #[macro_use]
 extern crate clap;
-extern crate ctrlc;
-extern crate ears;
+//extern crate ctrlc;
+//extern crate ears;
 extern crate image;
 #[macro_use]
 extern crate lazy_static;
-extern crate sixel_sys;
+//extern crate sixel_sys;
 extern crate tempdir;
 extern crate termion;
 extern crate time;
@@ -91,7 +91,7 @@ fn main() {
 }
 fn do_main() -> i32 {
 	let exit_clone = EXIT.clone();
-	ctrlc::set_handler(move || exit_clone.store(true, AtomicOrdering::Relaxed)).unwrap();
+	//ctrlc::set_handler(move || exit_clone.store(true, AtomicOrdering::Relaxed)).unwrap();
 
 	let opt_width = Arg::with_name("width")
 		.help("The max width of the frame")
